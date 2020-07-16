@@ -25,14 +25,22 @@ class SonarApiClient:
         return r.json()
     
     def get_all_ids(self, endpoint):
-        data = self._make_request(endpoint)
+        pageIndex = 1
+        totalCollectedIds = 0
+        totalIds = -1
         ids = []
-        for component in data['components']:
-            dict = {
-                'id': component['id'],
-                'key': component['key']
-            }
-            ids.append(dict)
+        while (totalIds != totalCollectedIds):
+            data = self._make_request(endpoint+'&p={}'.format(pageIndex))
+            totalIds = data['paging']['total']
+            totalCollectedIds += len(data['components'])
+
+            for component in data['components']:
+                dict = {
+                    'id': component['id'],
+                    'key': component['key']
+                }
+                ids.append(dict)
+            pageIndex = pageIndex +1
         return ids
     
     def get_all_available_metrics(self, endpoint):
