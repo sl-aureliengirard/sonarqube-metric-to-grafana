@@ -22,8 +22,10 @@ docker build -t export-sonarqube-metric:v0.1 .
 
 ```bash
 docker run -d --name export-sonarqube \
+-e SONAR_BASE_URL=http://sonar.yourGroup.com:9876 \
 -e SONAR_USER=admin \
 -e SONAR_PASSWORD=admin \
+-e INFLUX_URL=192.168.xx.xxx \
 -e INFLUX_USER=admin \
 -e INFLUX_PASSWORD=admin \
 -e INFLUX_DB=sonarqube_exporter \
